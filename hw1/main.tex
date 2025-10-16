@@ -82,4 +82,104 @@ at the end is:
 
 So "y" is equal to the missing number at the end of the algorithm. And we return "y" at the end.
 
+\section*{Exercise 2}
+We have an accumulator "y" which is initialized to 0. And in each iteration we update "y" to be equal to the current coefficient + z times the previous value of "y".
+So if we unroll the loop, we can see that at the end of the algorithm, "y" is equal to:
+\begin{align*}
+   y &= a_0 + z \cdot (a_1 + z \cdot (a_2 + z \cdot (... + z \cdot (a_{n-1} + z \cdot (a_n + z \cdot 0))...))) \\
+   &= a_0 + a_1 z + a_2 z^2 + ... + a_{n-1} z^{n-1} + a_n z^n \\
+   &= \sum_{i=0}^{n} a_i z^i \\
+   &= p(z)
+\end{align*}
+
+\section*{Exercise 3}
+
+\subsection*{(a)}
+There exists constants \(c_1\) and \(c_2\) such that:
+\begin{align*}
+   f_1(n) &\leq_{ae} c_1 g_1(n) \\
+   f_2(n) &\leq_{ae} c_2 g_2(n)
+\end{align*}
+
+Let \(c = \max(c_1, c_2)\), then:
+\begin{align*}
+   f_1(n) + f_2(n) &\leq_{ae} c_1 g_1(n) + c_2 g_2(n) \\
+   &\leq_{ae} c g_1(n) + c g_2(n) \\
+   &\leq_{ae} c (g_1(n) + g_2(n)) \\
+   &\leq_{ae} c \cdot 2 \max(g_1(n), g_2(n)) \\
+\end{align*}
+Thats what we wanted to show.
+
+\subsection*{(b)}
+There exists constants \(c_1\) and \(c_2\) such that:
+\begin{align*}
+   f_1(n) &\leq_{ae} c_1 g_1(n) \\
+   f_2(n) &\leq_{ae} c_2 g_2(n)
+\end{align*}
+Then:
+\begin{align*}
+   f_1(n) \cdot f_2(n) &\leq_{ae} c_1 g_1(n) \cdot c_2 g_2(n) \\
+   &= (c_1 c_2) (g_1(n) \cdot g_2(n))
+\end{align*}
+Thats what we wanted to show.
+
+\subsection*{(c)}
+There exists constants \(c_1\) and \(c_2\) such that:
+\begin{align*}
+   f(n) &\leq_{ae} c_1 g(n) \\
+   g(n) &\leq_{ae} c_2 h(n)
+\end{align*}
+Then:
+\begin{align*}
+   f(n) &\leq_{ae} c_1 g(n) \\
+   &\leq_{ae} c_1 c_2 h(n)
+\end{align*}
+Thats what we wanted to show.
+
+\subsection*{(d)}
+
+
+\section*{Exercise 4}
+The order is:
+\begin{align*}
+   \log n < n \log \log n < n \log n < 2n^2 - 4n < n^2 \log n < 2^n
+\end{align*}
+\\
+\\
+\(\log n < n \log \log n\): \\
+From exercise 3(b), if we set \(f_1(n) = \log n\), \(g_1(n) = n\), \(f_2(n) = 1\), \(g_2(n) = \log \log n\), we have:
+\begin{align*}
+   f_1(n) \cdot f_2(n) &\leq_{ae} c_1 g_1(n) \cdot c_2 g_2(n) \\
+   \log n &\leq_{ae} c n \log \log n
+\end{align*}
+\\
+\\
+\(n \log n < 2n^2 - 4n\): \\
+We can see that for \(n \geq 4\):
+\begin{align*}
+   2n^2 - 4n - n \log n &= n(2n - 4 - \log n) \\
+   &\geq n(2n - 4 - n) \\
+   &= n(n - 4) \\
+   &\geq 0
+\end{align*}
+\\
+\\
+\(2n^2 - 4n < n^2 \log n\): \\
+We can see that for \(n \geq 4\):
+\begin{align*}
+   n^2 \log n - 2n^2 + 4n &= n(n \log n - 2n + 4) \\
+   &\geq n(n \log n - 2n + 2n) \\
+   &= n^2 \log n \\
+   &\geq 0
+\end{align*}
+\\
+\\
+\(n^2 \log n < 2^n\): \\
+We can see that for \(n \geq 16\):
+\begin{align*}
+   2^n - n^2 \log n &\geq 2^n - n^2 \cdot n \\
+   &= 2^n - n^3 \\
+   &\geq 0
+\end{align*}
+
 \end{document}
