@@ -10,7 +10,7 @@
   \begin{tabular}{@{} l l @{}}
     \textbf{Authors} & \textbf{Tutors} \\
     Abdullah Oğuz Topçuoğlu & Maryna Dernovaia \\
-    Ahmed Waleed Ahmed Badawy Shora & guys fill here \\
+    Ahmed Waleed Ahmed Badawy Shora & Jan-Hendrik Gindorf \\
     Yousef Mostafa Farouk & guys fill here \\
   \end{tabular}
 \end{flushright}
@@ -63,7 +63,7 @@ Given an array A[1, . . . , n] of integers and an integer k, we can decide wheth
 fun AreKSimilar(A[1...n], k)
    MergeSort(A)  // from the lecture, O(n log n) time
    for i = 1 to n-1 do
-      if A[i+1] - A[i] <= k and A[i+1] != A[i] then
+      if A[i+1] - A[i] <= k then
          return True
    return False
 \end{verbatim}
