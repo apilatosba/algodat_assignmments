@@ -88,4 +88,36 @@ We can do something similar to LsdRadix sort we saw in the lecture. \\
     \item Since we perform two CountingSorts, the total running time is O(n) + O(n) = O(n).
 \end{itemize}
 
+\section*{Exercise 4}
+\subsection*{(a)}
+We can use the LSDRadixSort again. \\
+\textbf{Pseudocode:}
+\begin{verbatim}
+    const ALPHABET_SIZE = 26
+    function SortStrings(A[1..n]) {
+        for i in ALPHABET_SIZE..1 {
+            redefine key(string) := string[i]
+            CountingSort(A)
+        }
+    }
+\end{verbatim}
+
+\textbf{Correctness:}
+\begin{itemize}
+    \item We sort the strings starting from the last character to the first character (least significant to most significant).
+    \item Each CountingSort is stable, so the order of strings with the same character at position i is preserved.
+    \item Therefore after sorting by all character positions, the strings are sorted lexicographically.
+    \item So just like LSDRadixSort we saw in the lecture where d is alphabet size, U is the alphabet
+\end{itemize}
+
+\textbf{Running Time Analysis:}
+\begin{itemize}
+    \item Each CountingSort runs in time O(n + k) where k is the range of the keys.
+    \item Here the keys are the english letters 'a' to 'z', so k = 26.
+    \item Therefore each CountingSort runs in time O(n + 26) = O(n).
+    \item Since we perform CountingSort 26 times, the total running time is O(26 * n) = O(n).
+\end{itemize}
+
+
+
 \end{document}
