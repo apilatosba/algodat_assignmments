@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\begin{document}
+\section*{\huge Homework Sheet 3}
+\begin{flushright}
+  \begin{tabular}{@{} l l @{}}
+    \textbf{Authors} & \textbf{Tutors} \\
+    Abdullah Oğuz Topçuoğlu & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag&
+    Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design an algorithm is to be answered by (1) your
+% algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (More Lists) 4+4 points
+% a. Design an algorithm for the operation Concat(List A, List B) which concatenates the two
+% given doubly linked lists A and B in time O(1).
+% b. Augment our list implementation to also maintain the size (i.e. the number of elements in the
+% list). More precisely, adapt the data structure and implement an operation Size() that returns the
+% current size of the list in time O(1). Adapt the operations InsertAfter(Element x, Handle p),
+% Remove(Handle p) and Concat(List A, List B) to still run in time O(1).
+% Exercise 2 (Stability) 3+3+3 points
+% Determine for each of the algorithms InsertionSort, SelectionSort, and MergeSort that we
+% saw in the lecture whether they are stable or not. Justify your answer. For the algorithms that are
+% not stable, can you find stable variants?
+% Exercise 3 (Sorting Points) 12 points
+% A grid point is a point p = (x, y) whose coordinates x and y are integers. We call the points (x−1, y),
+% (x + 1, y), (x, y − 1), and (x, y + 1) the neighbors of p. A set S of grid points is connected if for every
+% ∅ ⊂ S
+% ′ ⊂ S there are p1 ∈ S
+% ′ and p2 ∈ S \ S
+% ′
+% such that p1 is a neighbor of p2.
+% For this exercise you are given an array A[1..n] whose elements are grid points. We assume that
+% A stores a connected set of n grid points. (We also assume that each coordinate of each grid point fits
+% in one memory cell.) Design an algorithm that sorts A lexicographically in time O(n). This means
+% that we want to sort the grid points in A first by their x-coordinate and as a tie breaker by their
+% y-coordinate.
+% Exercise 4 (Sorting Strings) 11(+5) points
+% For this exercise, a string is an array S[1, . . . , ℓ] consisting of ℓ lower case English letters. You can
+% assume that the i-th letter of the alphabet {a, . . . , z} is encoded by the number i. You are given an
+% array A of n strings and the goal is to sort them lexicographically. This means we compare strings
+% with respect to the usual alphabetical order, e.g. a < ab < b.
+% 1
+% a. Suppose all strings have the same length ℓ ≥ 1. Design an algorithm to sort A in time O(nℓ).
+% b. (5 bonus points) Now suppose each string A[i] has some length ℓi ≥ 1, and these are not necessarily
+% all the same (unlike in the previous task). Design an algorithm to sort A in time O(n+m), where
+% m =
+% Pn
+% i=1 ℓi
+% is the total length of all strings. You can assume that the lengths ℓ1, . . . , ℓn are part
+% of the input.
+
+
+
+\end{document}
