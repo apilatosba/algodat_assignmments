@@ -58,6 +58,34 @@
 % is the total length of all strings. You can assume that the lengths ℓ1, . . . , ℓn are part
 % of the input.
 
+\section*{Exercise 3}
+We can do something similar to LsdRadix sort we saw in the lecture. \\
+\textbf{Pseduocode:}
+\begin{verbatim}
+    function SortGridPoints(A[1..n]) {
+        redefine key(point) := point.y
+        CountingSort(A)
 
+        redefine key(point) := point.x
+        CountingSort(A)
+    }
+\end{verbatim}
+
+\textbf{Correctness:}
+\begin{itemize}
+    \item The first CountingSort sorts the points by their y coordinates.
+    \item The second CountingSort sorts the points by their x coordinates, but since CountingSort is stable, the order of points with the same x coordinate is preserved.
+    \item Therefore after both sorts the points are sorted lexicographically by (x, y).
+    \item Thats also what we did in the lecture for LSDRadixSort we started from the least significant digit to the most significant digit. The same idea applies here.
+\end{itemize}
+
+\textbf{Running Time Analysis:}
+\begin{itemize}
+    \item Each CountingSort runs in time O(n + k) where k is the range of the keys.
+    \item Here the keys are the x and y coordinates of the points.
+    \item Since the points are connected, the range of x coordinates is at most n and the range of y coordinates is also at most n.
+    \item Therefore each CountingSort runs in time O(n + n) = O(n).
+    \item Since we perform two CountingSorts, the total running time is O(n) + O(n) = O(n).
+\end{itemize}
 
 \end{document}
