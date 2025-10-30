@@ -93,9 +93,8 @@ We can do something similar to LsdRadix sort we saw in the lecture. \\
 We can use the LSDRadixSort again. \\
 \textbf{Pseudocode:}
 \begin{verbatim}
-    const ALPHABET_SIZE = 26
-    function SortStrings(A[1..n]) {
-        for i in ALPHABET_SIZE..1 {
+    function SortStrings(A[1..n], length) {
+        for i in length..1 {
             redefine key(string) := string[i]
             CountingSort(A)
         }
@@ -118,6 +117,43 @@ We can use the LSDRadixSort again. \\
     \item Since we perform CountingSort 26 times, the total running time is O(26 * n) = O(n).
 \end{itemize}
 
+\subsection*{(b)}
+The idea is i will try to convert this problem to the one we solved in part (a). I will treat every word as if they have the same length which is the maximum length of the strings in the input
+And then i will introduce a special character for non existent characters in the shorter strings that will come before 'a' in the alphabet.
+So that when we sort the strings lexicographically the shorter strings will come before the longer strings with the same prefix. So i change the alphabet to be \{\#, a, b, ..., z\} where \# is the special character. \\
 
+\textbf{Pseudocode:}
+\begin{verbatim}
+    function SortStringsVariableLength(A[1..n], lengths[1..n]) {
+        maxLength = 0
+        for i in 1..n {
+            if lengths(i) > maxLength {
+                maxLength = lengths(i)
+            }
+        }
+
+        for i in maxLength..1 {
+            if i > length(string) {
+                redefine key(string) := '#'
+            } else {
+                redefine key(string) := string[i]
+            }
+
+            CountingSort(A)
+        }
+    }
+\end{verbatim}
+
+\textbf{Correctness:} \\
+We proved this in part (a) already.
+
+\textbf{Running Time Analysis:}
+\begin{itemize}
+    \item Finding the maximum length takes O(n) time.
+    \item Each CountingSort runs in time O(n + k) where k is the range
+    \item Here the keys are the english letters 'a' to 'z' plus the special character '\#', so k = 27.
+    \item Therefore each CountingSort runs in time O(n + 27) = O(n).
+    \item Since we perform CountingSort maxLength times, the total running time is O(maxLength * n + n) = O(m + n) = O(m) where m is the total length of all strings.
+\end{itemize}
 
 \end{document}
