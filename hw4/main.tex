@@ -137,4 +137,28 @@ We will assign an amortized cost to each operation as follows:
     Luckily enough we saved 1 euro per element during the Push() operations so we can spend them here.
 \end{itemize}
 
+\section*{Exercise 3}
+This is not a great idea because when we shrink when \(n = N/2 - 1\) the new size would be \(2n = N - 2\). So we are just reducing the size by 2. And in the lecture we saw that adding
+a constant amount when resizing(growing) is a bad idea so we can guess that something similar would happen when removing(shrinking) a constant amount too. \\
+Consider this sequence
+\begin{verbatim}
+// we start with a single push back
+PushBack(x1) // array count becomes 1 // capacity here is 1
+
+// we continue with two push backs and then two pop backs and repeat this as many times as you want
+PushBack(x2) // array count becomes 2 // capacity here is 2
+PushBack(x3) // array count becomes 3 // capacity here is 4
+PopBack()    // array count becomes 2
+PopBack()    // array count becomes 1 // resizing happens here, new capacity becomes 2
+
+PushBack(x4) // array count becomes 2
+PushBack(x5) // array count becomes 3 // resizing happens here, new capacity becomes 4
+PopBack()    // array count becomes 2
+PopBack()    // array count becomes 1 // resizing happens here, new capacity becomes 2
+\end{verbatim}
+
+So every second operation we have a resizing and resizing is linear time. So if we have \(m\) operations we would have \(\frac{m}{2}\) resizings and each resizing takes linear time.
+So the total time would be \(O(m^2)\).
+
+
 \end{document}
