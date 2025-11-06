@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\begin{document}
+\section*{\huge Homework Sheet 4}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design an algorithm is to be answered by (1) your
+% algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Alternative Dictionary) 2+3+5 points
+% Consider the following implementation of a dictionary data structure on n elements: We maintain
+% arrays A0, A1, . . . , A⌈log n⌉
+% , where Ai
+% is either empty or contains exactly 2
+% i
+% elements in sorted order.
+% The operation Insert is implemented as follows:
+% 1: procedure Insert(x)
+% 2: Let B be an array of length 1 with entry x
+% 3: for i := 0, 1, . . . do
+% 4: if Ai
+% is empty then
+% 5: Replace Ai by B and stop
+% 6: else
+% 7: B := Merge(Ai
+% , B)
+% 8: Replace Ai by an empty array
+% It is your task to analyze the data structure.
+% a. Start from an empty data structure (where all arrays Ai are empty), and apply the following
+% operations: Insert(2), Insert(4), Insert(10), Insert(5), Insert(6), Insert(7). Draw the
+% state of the arrays A0, A1, A2 after each operation.
+% b. Implement an operation Find(k) that finds an element x in the data structure with x.key = k
+% (or reports that there is no such element). Your implementation should run in time O
+% (log n)
+% 2
+% 
+% .
+% c. Prove that Insert(x) runs in amortized time O(log n).
+% Hint: Remember the amortized analysis of the binary counter.
+% Exercise 2 (Many-Pop Stack) 4+4+5 points
+% In the lecture we have seen the Stack data structure supporting the operations Push(x), Pop()
+% and Front(), and we implemented Stacks using linked lists or dynamic arrays. Now we want to
+% additionally support the operation ManyPop(k), which is given an integer k ≥ 1 and removes the
+% topmost k items from the stack. If there are less than k items on the stack, then ManyPop(k) results
+% in an empty stack.
+% 1
+% a. Suppose we know an upper bound N on the size of the stack, and we implement the stack as an
+% array A[1..N]. In this setting, give an implementation of ManyPop(k) in worst-case time O(1).
+% b. For stacks implemented via linked lists, implement ManyPop(k) in worst-case time O(k).
+% c. For stacks implemented via linked lists, prove that the amortized running time of Push and
+% ManyPop is O(1). That is, show that starting from an empty stack, any sequence σ1, . . . , σm of
+% Push and ManyPop operations takes total time O(m).
+% Exercise 3 (Manager’s Idea) 7 points
+% Your manager asks you to change the PopBack() procedure of dynamic arrays to replace the line “if
+% n = N/4 and n > 0 : Reallocate()” by “if n = N/2 − 1 and n > 0 : Reallocate()”. They argue
+% that it is wasteful to shrink an array only when three-fourths of it are unused. Convince them that
+% this is a bad idea, by giving a sequence of m PushBack and PopBack operations that would need
+% time Θ(m2
+% ) if their proposal was implemented.
+% Exercise 4 (Dictionaries in Action) 5+5 points
+% Suppose you have access to a dictionary data structure supporting the operations Find(x), Insert(x),
+% Remove(x), and Min().
+% a. Given an array A[1 .. n], compute the array B[1 .. m] obtained from A by removing all duplicates—
+% that is, all elements which have appeared in the array before. (In particular, m is the number of
+% distinct elements in A.) The order of the remaining elements should be unchanged.
+% Design an algorithm for this problem using the dictionary data structure. Assuming that the
+% dictionary operations run in time O(log n), your algorithm should run in time O(n log n).
+% b. Argue that at least one of the operations Insert(x), Remove(x), and Min() requires time
+% Ω(log n).
+% Hint: Apply the lower bound we have seen for comparison-based sorting algorithms.
+
+\section*{Exercise 2}
+\subsection*{(a)}
+We will have the Stack structure like this
+\begin{verbatim}
+struct Stack {
+  int top; // index of the top element
+  int A[N]; // array of size N
+};
+\end{verbatim}
+
+So removing \(k\) many elements from stack can be done by just decrementing the top index by \(k\). Here is the pseudocode:
+\begin{verbatim}
+function ManyPop(Stack S, int k)
+  if S.top < k then
+    S.top = 0; // stack becomes empty
+  else
+    S.top -= k; // remove top k elements
+\end{verbatim}
+
+This implementation runs in \(O(1)\) time since it only involves a couple of arithmetic operations and a conditional check.
+
+\subsection*{(b)}
+We will have the Stack structure like this
+\begin{verbatim}
+struct Node {
+  int data;
+  Node* next;
+};
+
+struct Stack {
+  Node* top; // pointer to the top node
+};
+\end{verbatim}
+
+Every element on the stack points to the elements thats below it. So the first element thats pushed to the stack has its next pointer as null. Here is the pseudocode for ManyPop:
+\begin{verbatim}
+function ManyPop(Stack S, int k)
+  count = 0;
+  while S.top != null and count < k do
+    temp = S.top;
+    S.top = S.top.next; // move top to the next element
+    delete temp; // free memory of the popped element
+    count += 1;
+\end{verbatim}
+
+This implementation runs in \(O(k)\) time since it involves a loop that iterates \(k\) times, performing constant time operations in each iteration.
+
+\subsection*{(c)}
+To prove that the amortized running time of Push and ManyPop is \(O(1)\), we will use the bank accounting method from the lecture.
+We will assign an amortized cost to each operation as follows:
+\begin{itemize}
+  \item Push operation: Lets say we get 2 euros every time Push() is called. We spend 1 euro for the constant time operation in Push() function and store
+    the remaining 1 euro in the bank.
+  \item ManyPop operation: Lets say we get 0 euro every time ManyPop() is called. We need k euros to remove k elements from the stack. Meaning that we need 1 euro to remove one element.
+    Luckily enough we saved 1 euro per element during the Push() operations so we can spend them here.
+\end{itemize}
+
+\end{document}
