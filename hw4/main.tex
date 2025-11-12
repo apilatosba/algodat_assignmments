@@ -4,7 +4,8 @@
 \usepackage{array}
 \usepackage{mathtools}
 \usepackage{enumitem}
-
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \begin{document}
 \section*{\huge Homework Sheet 4}
 \begin{flushright}
@@ -79,6 +80,54 @@
 % b. Argue that at least one of the operations Insert(x), Remove(x), and Min() requires time
 % Ω(log n).
 % Hint: Apply the lower bound we have seen for comparison-based sorting algorithms.
+\section*{Exercise 2}
+\subsection*{(a)}
+The initial state: $A_0 =[],A_1=[], A_2=[]$\\
+After insert(2): $A_0 =[2],A_1=[], A_2=[]$\\
+After insert(4): $A_0 =[],A_1=[2,4], A_2=[]$\\
+After insert(10): $A_0 =[10],A_1=[2,4], A_2=[]$\\
+After insert(5): $A_0 =[],A_1=[], A_2=[2,4,5,10]$\\
+After insert(6): $A_0 =[6],A_1=[], A_2=[2,4,5,10]$\\
+After insert(7): $A_0 =[],A_1=[6,7], A_2=[2,4,5,10]$\\
+\subsection*{(b)}
+
+\textbf{Pseudocode:}
+
+\begin{algorithm}
+    \begin{algorithmic}[1]
+        \Function{Find}{$k$}
+            \For{$i := 0,1,...$}  \Comment{iterate through each array}
+                \State $x = A_i.\text{BinarySearch}(k)$ \Comment{Binary search in sorted array $A_i$}
+                \If{$x \neq \bot$}
+                    \State \Return $x$
+                \EndIf
+            \EndFor
+            \State \Return $\bot$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\textbf{Correctness proof:} 
+
+- Each array $A_i$ is sorted. By the correctness of the binary search algorithm (from the lecture), 
+  $A_i.\text{BinarySearch}(k)$ correctly returns the element of key $k$ if it exists in $A_i$, and $\bot$ otherwise.  
+- Since the algorithm iterates over all arrays, it will find $k$ in the first array that contains it.  
+- If $k$ is not present in any array, the algorithm correctly returns $\bot$.  
+
+Hence, the algorithm correctly implements \textsc{Find}.
+
+\medskip
+\textbf{Time analysis:}
+
+- Each array $A_i$ has size $|A_i| = 2^i$, for $i = 0, 1, \dots, \lceil \log n \rceil$.  
+- Binary search on array $A_i$ takes $O(\log |A_i|) = O(\log 2^i) = O(i)$ time.  
+- In the worst case, we may search all arrays, so the total time is:
+
+\[
+T_{\text{worst}} = \sum_{i=0}^{\lceil \log n \rceil} O(i) = O\Big( \sum_{i=0}^{\lceil \log n \rceil} i \Big) = O\big((\log n)^2\big)
+\]
+
+- Therefore, the worst-case running time of \textsc{Find} is $O((\log n)^2)$.
 
 \section*{Exercise 2}
 \subsection*{(a)}
@@ -160,5 +209,113 @@ PopBack()    // array count becomes 1 // resizing happens here, new capacity bec
 So every second operation we have a resizing and resizing is linear time. So if we have \(m\) operations we would have \(\frac{m}{2}\) resizings and each resizing takes linear time.
 So the total time would be \(O(m^2)\).
 
+\section*{Exercise 4}
+\begin{itemize}
+    \item \begin{algorithm}
 
+\begin{algorithmic}[1]
+\Function{RemoveDuplicate}{$A[1..n]$}
+    \State Allocate $B[1..m]$
+    \State $C := $ new Dictionary
+    \State $j := 1$
+    \For{$i := 1 \text{ to } n$} \Comment{$O(n)$}
+        \If{$C.\text{find}(A[i]) = \bot$}
+            \State $C.\text{insert}(A[i])$ \Comment{$O(\log n)$}
+            \State $B[j] := A[i]$
+            \State $j = j + 1$
+        \EndIf
+    \EndFor
+    \State \Return $B$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+    \textbf{Correctness Proof:}
+
+We show that the algorithm \textsc{RemoveDuplicate} correctly returns an array $B$ 
+that contains all elements of $A$ in their original order, with duplicates removed.
+
+\medskip
+\noindent
+\textbf{Case 1:} $A$ has no duplicate elements.
+
+\begin{itemize}
+\item For each $i$ from $1$ to $n$, the lookup $C.\text{find}(A[i])$ will return $\bot$ 
+because the element $A[i]$ has not been inserted before.
+\item Therefore, the condition \texttt{if C.find(A[i]) = $\bot$} is always true, 
+so every element $A[i]$ is inserted into both the dictionary $C$ and the output array $B$.
+\item Consequently, $B$ will contain exactly all elements of $A$ in the same order, 
+and no elements are skipped.
+\end{itemize}
+
+Hence, if $A$ has no duplicates, $B = A$.
+
+\medskip
+\noindent
+\textbf{Case 2:} $A$ contains duplicates.
+
+\begin{itemize}
+\item Consider the first occurrence of any value $x$ in $A$. 
+At this point, $C.\text{find}(x) = \bot$, 
+so $x$ is inserted into $C$ and appended to $B$.
+\item For any subsequent occurrence of the same value $x$, 
+we have $C.\text{find}(x) \neq \bot$, 
+so the algorithm skips the insertion and does not append $x$ to $B$.
+\item Thus, each distinct element of $A$ appears exactly once in $B$, 
+and since we traverse $A$ in order, the relative order of the first appearances is preserved.
+\end{itemize}
+
+\medskip
+\noindent
+\textbf{Conclusion:}
+In both cases, $B$ contains exactly the distinct elements of $A$, 
+preserving their order of first appearance. Therefore, 
+the algorithm is \emph{correct}.
+
+    \textbf{Time analysis:}
+Each of the $n$ iterations performs one dictionary lookup and possibly one insertion, 
+each taking $O(\log n)$ time, so the total running time is $O(n \log n)$.
+\item
+\textbf{1. Binary Search Tree (BST):} 
+
+Let the BST have $n$ elements and height $h$. In a basic (unbalanced) BST, $h$ can be as large as $n$.  
+- $\text{Insert}(x)$ requires descending from the root to the appropriate leaf: $\Theta(h)$ time.  
+- $\text{Remove}(x)$ also requires searching for $x$ and possibly adjusting the tree: $\Theta(h)$.  
+- $\text{Min}()$ requires following the leftmost path: $\Theta(h)$.  
+
+Even in a balanced BST, $h = \Theta(\log n)$. Therefore, at least one of the operations $\text{Insert}$, $\text{Remove}$, or $\text{Min}$ requires $\Omega(\log n)$ time.
+
+\medskip
+\textbf{2. Sorted Array :} 
+
+In a sorted array of size $n$:  
+- $\text{Min}()$ can be performed in $\Theta(1)$ time (the first element).  
+- $\text{Insert}(x)$ can find the correct position using binary search in $\Theta(\log n)$ time, 
+  but it must shift all subsequent elements to make space: $\Theta(n)$ worst case.  
+- $\text{Remove}(x)$ can locate the element using binary search in $\Theta(\log n)$ time, 
+  but shifting elements after removal costs $\Theta(n)$ in the worst case.  
+
+Hence, at least one operation ($\text{Insert}$ or $\text{Remove}$) requires $\Omega(n)$ time,
+which certainly implies $\Omega(\log n)$.
+
+\medskip
+\textbf{3. Unsorted Array:} 
+
+In an unsorted array:  
+- $\text{Insert}(x)$ can be done in $\Theta(1)$ time (append at the end).  
+- $\text{Remove}(x)$ requires locating $x$ by scanning the array: $\Theta(n)$.  
+- $\text{Min}()$ requires scanning all $n$ elements: $\Theta(n)$.  
+
+Thus, at least one operation ($\text{Remove}$ or $\text{Min}$) requires $\Omega(\log n)$ time.
+
+\medskip
+\textbf{4. Linked List:} 
+
+For a singly linked list:  
+- $\text{Insert}(x)$ at the head or tail can be done in $\Theta(1)$ time.  
+- $\text{Remove}(x)$ requires scanning for $x$: $\Theta(n)$.  
+- $\text{Min}()$ requires traversing all $n$ elements: $\Theta(n)$.  
+
+Again, at least one operation requires $\Omega(\log n)$ time.
+\end{itemize}
 \end{document}
