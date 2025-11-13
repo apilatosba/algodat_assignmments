@@ -269,4 +269,17 @@ An AVL tree of maximum height with 12 nodes:
   \end{tikzpicture}
 \end{center}
 
+\subsection*{(b)}
+\textbf{Proof by Induction:}
+\begin{itemize}
+  \item \textbf{Base Case:} For height \( h = 0 \), the minimum number of nodes in an AVL tree is \( F_{0+2} - 1 = F_2 - 1 = 1 - 1 = 0 \), which is correct since an AVL tree of height 0 has no nodes.
+  \item \textbf{Inductive Step:} Assume that for some height \( h \geq 0 \), the minimum number of nodes in an AVL tree of height \( h \) is \( F_{h+2} - 1 \). We need to show that this holds for height \( h + 1 \).
+  \item Consider an AVL tree of height \( h + 1 \). To minimize the number of nodes, we can have one subtree of height \( h \) and another subtree of height \( h - 1 \) (since the height difference must be at most 1 for AVL trees).
+  \item By the inductive hypothesis the minimum number of nodes in the subtree of height \( h \) is \( F_{h+2} - 1 \) and in the subtree of height \( h - 1 \) is \( F_{(h-1)+2} - 1 = F_{h+1} - 1 \).
+  \item Therefore the total minimum number of nodes in the AVL tree of height \( h + 1 \) is:
+    \[N(h + 1) = (F_{h+2} - 1) + (F_{h+1} - 1) + 1 = F_{h+2} + F_{h+1} - 1 = F_{(h+1)+2} - 1\]
+    (using the Fibonacci property \( F_{n} = F_{n-1} + F_{n-2} \)).
+  \item Thus by induction the statement holds for all heights \( h \geq 0 \).
+\end{itemize}
+
 \end{document}
