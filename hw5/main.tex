@@ -1,0 +1,228 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\section*{\huge Homework Sheet 5}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Exercise 1 (AVL Trees) 12 points
+% Start from an empty AVL tree, and apply the following operations. In your solution, draw the state
+% of the AVL tree after each operation:
+% ■ Insert(2)
+% ■ Insert(3)
+% ■ Insert(9)
+% ■ Insert(5)
+% ■ Insert(8)
+% ■ Insert(6)
+% ■ Remove(8)
+% ■ Remove(5)
+% ■ Insert(4)
+% ■ Insert(5)
+% ■ Remove(6)
+% Hint: After Insert(8), the tree looks like the following picture.
+% 3
+% 2 8
+% 5 9
+% Exercise 2 (Maximum Height AVL Tree) 4+4 points
+% a. Draw an AVL tree of maximum height which consists of 7 nodes and one which consists of 12
+% nodes.
+% 1
+% b. Prove that the AVL tree of height h with the minimum number of nodes has exactly Fh+2 − 1
+% nodes.
+% Exercise 3 (AVL Trees Extended) 3+4+5 points
+% In this exercise, we will augment the AVL tree data structure from the lecture to support more
+% operations (in addition to the operations Insert, Remove, Find from the lecture).
+% a. Implement the operation Min(h) that given a handle h returns a handle to the node with the
+% smallest key currently stored in the sub-tree rooted at h. Your implementation should have
+% running time O(log n).
+% b. We additionally store in each node of the AVL tree the size of its subtree. Show that we can
+% correctly maintain these sizes under the operations Insert and Remove, while maintaining the
+% O(log n) running time.
+% c. Implement an operation Rank(k) that returns the rank of k, that is, the number of elements x
+% in the tree satisfying x.key ≤ k. Your implementation should run in time O(log n).
+% Exercise 4 (Next) 4+1+3 points
+% For this exercise, we assume that we have augmented the nodes of an AVL tree T such that in each
+% node x we maintain a handle x.parent pointing to the parent of this node. The parent handle of the
+% root is ⊥. You don’t need to show how to maintain these parent pointers.
+% The following procedure computes, given a handle h, the next handle a after h. That is, the
+% output a satisfies that akey is minimal among all keys bigger than hkey that are stored in T. If
+% no key bigger than hkey is stored in the tree, the output is ⊥.
+% 1: procedure Next(Handle h)
+% 2: if hright ̸= ⊥ then
+% 3: return Min(hright)
+% 4: a := h
+% 5: while a ̸= ⊥ and akey ≤ hkey do
+% 6: a := aparent
+% 7: return a
+% a. Prove correctness of the procedure, that is that the procedure finds the next handle after h.
+% b. Show that the worst case running time is O(log n) in AVL trees.
+% c. Show that you can use Next to iterate over the elements stored in a binary search tree in linear
+% time. That is, show that the following code has running time O(n).
+% 1: h := Min(h)
+% 2: while h ̸= ⊥ do
+% 3: h := Next(h)
+
+\section*{Exercise 1}
+We begin with an empty AVL tree and perform the following operations step by step:
+\begin{enumerate}
+    \item Insert(2)
+    \item Insert(3)
+    \item Insert(9)
+    \item Insert(5)
+    \item Insert(8)
+    \item Insert(6)
+    \item Remove(8)
+    \item Remove(5)
+    \item Insert(4)
+    \item Insert(5)
+    \item Remove(6)
+\end{enumerate}
+
+\begin{itemize}
+  \item [Insert(2):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {2};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(3):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {2}
+          child[missing]
+          child {node {3}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(9):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {3}
+          child {node {2}}
+          child {node {9}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(5):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {3}
+          child {node {2}}
+          child {node {9}
+            child {node {5}}
+            child[missing]};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(8):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {3}
+          child {node {2}}
+          child {node {8}
+            child {node {5}}
+            child {node {9}}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(6):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {5}
+          child {node {3}
+            child {node {2}}
+            child[missing]}
+          child {node {8}
+            child {node {6}}
+            child {node {9}}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Remove(8):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {5}
+          child {node {3}
+            child {node {2}}
+            child[missing]}
+          child {node {9}
+            child {node {6}}
+            child[missing]};
+      \end{tikzpicture}
+    \end{center}
+  \item [Remove(5):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {6}
+          child {node {3}
+            child {node {2}}
+            child[missing]}
+          child {node {9}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(4):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {6}
+          child {node {3}
+            child {node {2}}
+            child {node {4}}}
+          child {node {9}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Insert(5):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {4}
+          child {node {3}
+            child {node {2}}
+            child[missing]}
+          child {node {6}
+            child {node {5}}
+            child {node {9}}};
+      \end{tikzpicture}
+    \end{center}
+  \item [Remove(6):]
+    \begin{center}
+      \begin{tikzpicture}[level distance=1.5cm,
+        level 1/.style={sibling distance=3cm},
+        level 2/.style={sibling distance=1.5cm}]
+        \node {4}
+          child {node {3}
+            child {node {2}}
+            child[missing]}
+          child {node {9}
+            child {node {5}}
+            child[missing]};
+      \end{tikzpicture}
+    \end{center}
+\end{itemize}
+\end{document}
