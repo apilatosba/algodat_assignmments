@@ -306,4 +306,20 @@ To maintain the size of each subtree during Insert and Remove operations, we can
 \end{itemize}
 Since both Insert and Remove operations involve traversing the height of the tree, which is O(log n) in an AVL tree, updating the size attributes can be done in O(log n) time as well.
 
+\subsection*{(c)}
+To implement the Rank(k) operation, we can use the size attribute of each node to count the number of nodes with keys less than or equal to k. The algorithm is as follows:
+\begin{verbatim}
+int Rank(Key k)
+    current := root
+    result := 0
+    while current != NULL do
+        if k < current.key then
+            current := current.left
+        else
+            result += (current.left != NULL ? current.left.size : 0) + 1
+            current := current.right
+    return result
+\end{verbatim}
+The running time of this algorithm is O(log n) because in an AVL tree, the height is O(log n), and we may need to traverse from the root down to a leaf.
+
 \end{document}
