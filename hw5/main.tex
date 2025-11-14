@@ -282,4 +282,18 @@ An AVL tree of maximum height with 12 nodes:
   \item Thus by induction the statement holds for all heights \( h \geq 0 \).
 \end{itemize}
 
+\section*{Exercise 3}
+\subsection*{(a)}
+To implement the Min(h) operation, we can follow the left child pointers starting from the node
+represented by handle h until we reach a node that does not have a left child. This node will be the
+node with the smallest key in the subtree rooted at h since AVL trees are just BSTs with a constraint on the height of the nodes. The algorithm is as follows:
+\begin{verbatim}
+Handle Min(Handle h)
+    current := h
+    while current.left != NULL do
+        current := current.left
+    return current
+\end{verbatim}
+The running time of this algorithm is O(log n) because in an AVL tree, the height is O(log n), and we may need to traverse from the root of the subtree down to the leaf.
+
 \end{document}
