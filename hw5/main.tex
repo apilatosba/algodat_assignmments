@@ -296,4 +296,14 @@ Handle Min(Handle h)
 \end{verbatim}
 The running time of this algorithm is O(log n) because in an AVL tree, the height is O(log n), and we may need to traverse from the root of the subtree down to the leaf.
 
+\subsection*{(b)}
+To maintain the size of each subtree during Insert and Remove operations, we can update the size attribute of each node as we perform these operations.
+\begin{itemize}
+  \item \textbf{Insert:} When inserting a new node, we start from the root and traverse down to find the correct position for the new node. As we traverse back up the tree, we increment the size attribute of each node by 1 to account for the newly added node.
+    And when we do Rotate operations updating the size attribute of the nodes affected is just constant time because there is only three nodes affected by that in the Rotate operations.
+  \item \textbf{Remove:} When removing a node, we first find the node to be removed. After removing the node, we traverse back up the tree and decrement the size attribute of each node by 1 to account for the removed node.
+    And similar to Insert operation, when we do Rotate operations updating the size attribute of the nodes affected is just constant time because there is only three nodes affected by that in the Rotate operations.
+\end{itemize}
+Since both Insert and Remove operations involve traversing the height of the tree, which is O(log n) in an AVL tree, updating the size attributes can be done in O(log n) time as well.
+
 \end{document}
