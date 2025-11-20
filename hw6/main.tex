@@ -243,4 +243,39 @@ Building the max heap takes O(n) time as we saw in the lecture. Each call to Del
 The BuildMaxHeap() function builds a valid max heap from the given array A. In a max heap the maximum element is always at the root node. The DeleteMax() function removes and returns the maximum element from the heap and then reestablishes the max heap property by calling Heapify().
 So at the time we call DeleteMax() for the kth time we get the kth largest element from the original array A and then we return it.
 
+\section*{Exercise 4}
+We will maintain two heaps: a max heap Hlow to store the lower half of the elements and a min heap Hhigh to store the upper half of the elements.
+The max heap Hlow will allow us to efficiently retrieve the maximum element of the lower half. The min heap Hhigh will allow us to retrieve the minimum element of the upper half.
+\begin{verbatim}
+  int[] RunningMedian(A[1..n])
+    Hlow = new MaxHeap()
+    Hhigh = new MinHeap() // the difference is the comparison function
+    R = new int[1..n]
+    for i = 1..n do
+      if Hlow.isEmpty() or A[i] <= Hlow.Max() then
+        Hlow.Insert(A[i])
+      else
+        Hhigh.Insert(A[i])
+
+      // Balance the heaps
+      if Hlow.size() > Hhigh.size() + 1 then
+        Hhigh.Insert(Hlow.DeleteMax())
+      else if Hhigh.size() > Hlow.size() then
+        Hlow.Insert(Hhigh.DeleteMin())
+
+      // Calculate median
+      // either they are equal size or Hlow has one more element
+      if Hlow.size() == Hhigh.size() then
+        R[i] = Hhigh.Min()
+      else
+        R[i] = Hlow.Max()
+    return R
+\end{verbatim}
+\textbf{Running Time Analysis:} \\
+Each insertion into a heap takes O(log m) tim  where m is the number of elements in the heap. Since we are inserting n elements the total time for insertions is O(n log n). Balancing the heaps involves at most one deletion and one insertion, which also takes O(log n) time. Since we do this for each of the n elements, the total time for balancing is also O(n log n). Calculating the median takes O(1) time for each element, resulting in O(n) time for all n elements. Therefore, the overall time complexity of the algorithm is O(n log n). \\
+
+\textbf{Correctness Proof}: \\
+The algorithm maintains two heaps to keep track of the lower and upper halves of the elements seen so far. By ensuring that the sizes of the heaps differ by at most one, we can determine the median after each insertion. If the heaps are of equal size, the median is the minimum of the upper half (Hhigh). If Hlow has one more element than Hhigh, the median is the maximum of the lower half (Hlow). This approach guarantees that we always have access to the median in O(1) time after each insertion, and thus correctly computes the running median for each prefix of the array A.
+
+
 \end{document}
