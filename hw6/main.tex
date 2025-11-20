@@ -217,4 +217,30 @@ The heap tree would be
 This is not a heap also not a near heap because multiple nodes violate the max heap property. For example the node with the value 9 and the node with the value 8
 both violates the max heap property and they are not descendants of each other.
 
+\section*{Exercise 3}
+We are gonna use the same approach that we used in the lecture. We will build a max heap from the given array and then we will call
+DeleteMax() k many times.
+
+\begin{verbatim}
+  int KthLargestElement(A[1..n], k)
+    BuildMaxHeap(A)
+    for i = 1 to k do
+      result = DeleteMax(A)
+    return result
+
+  void BuildMaxHeap(A[1..n]) // this is called makeheap() in the lecture slides
+    for i = n/2 down to 1 do
+      Heapify(A, i) // heapify function from the lecture
+\end{verbatim}
+
+\textbf{Running Time Analysis:} \\
+Building the max heap takes O(n) time as we saw in the lecture. Each call to DeleteMax() takes O(log n) time. Since we are calling DeleteMax() k many times, this part takes O(k log n) time. Therefore the total running time of the algorithm is
+\begin{align*}
+  O(n) + O(k \log n) = O(n + k \log n).
+\end{align*}
+
+\textbf{Correctness Proof}: \\
+The BuildMaxHeap() function builds a valid max heap from the given array A. In a max heap the maximum element is always at the root node. The DeleteMax() function removes and returns the maximum element from the heap and then reestablishes the max heap property by calling Heapify().
+So at the time we call DeleteMax() for the kth time we get the kth largest element from the original array A and then we return it.
+
 \end{document}
