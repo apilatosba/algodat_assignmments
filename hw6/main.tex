@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\section*{\huge Homework Sheet 6}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design or implement an algorithm is to be answered
+% by (1) your algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Heaps?) 7 points
+% For each of the following arrays A[1..12], draw the corresponding binary tree implicitly represented by
+% A. In each case mark the vertices that violate the max-heap property and determine whether the
+% tree is a heap, a near-heap†
+% , or not a heap. If it is a near-heap, then draw the steps of a Heapify
+% operation.
+% a. A = [17, 15, 17, 13, 6, 12, 10, 1, 5, 3, 1, 11].
+% b. A = [4, 14, 13, 3, 8, 12, 11, 2, 2, 5, 7, 2]
+% c. A = [20, 10, 12, 9, 8, 3, 10, 13, 10, 15, 3, 7].
+% Exercise 2 (Almost Optimal Priority Queue) 4 points
+% On the last exercise sheet we proved that for every comparison-based data structure supporting the
+% operations Insert, DeleteMax, and Max, at least one of these operations requires worst-case time
+% Ω(log n). In the lecture we have seen that heaps support Insert and DeleteMax in worst-case time
+% O(log n) and Max in worst-case time O(1).
+% Show that for heaps the operations Insert, DeleteMax, and Max run in amortized time
+% O(log n), O(1), and O(1), respectively.
+% Exercise 3 (k-th largest Element) 9 points
+% You are given an array A[1..n] with comparable elements as well as an integer 1 ≤ k ≤ n. Design an
+% algorithm that returns the k-th largest element in time O(n + k log n). Formally, you should return
+% an element x contained in A such that at most k − 1 elements in A are strictly larger than x and at
+% most n − k elements in A are strictly smaller than x.
+% Exercise 4 (Running Median) 10 points
+% The median of an array B[1..m] is the element which would occur at position ⌈m/2⌉ after sorting the
+% array B[1..m]. For example, the median of the array [1, 8, 2, 5, 4] is 4.
+% †By near-heap we mean v-near-heap for some node v.
+% 1
+% You are given an array A[1..n] with comparable elements. Your goal is to compute the median of
+% the first ℓ entries of A, for each ℓ. More precisely, design an algorithm that runs in time O(n log n)
+% and outputs an array R[1..n] such that for each position ℓ the entry R[ℓ] stores the median of A[1..ℓ].
+% Hint: Build R from start to finish and maintain two binary heaps of almost equal sizes.
+% Exercise 5 (Train Station Planning) 10 points
+% Suppose you want to build a new train station. One of the many things that you need to determine is
+% the number of platforms the train station should have. For this, you have access to the list L[1..n]
+% of trains that will use this new train station. For each train, you are given its planned arrival and
+% departure time at the new station; of course, there will not be any delays. Each train needs to be
+% assigned to one platform, and two trains can be assigned to the same platform if the earlier departs
+% before the later arrives. As the space for your new train station is limited, you want to build as few
+% platforms as possible. Design an algorithm that, given L as input, determines the minimal number of
+% platforms in time O(n log n).
+
+\end{document}
