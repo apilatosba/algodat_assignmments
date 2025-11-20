@@ -60,4 +60,161 @@
 % platforms as possible. Design an algorithm that, given L as input, determines the minimal number of
 % platforms in time O(n log n).
 
+\section*{Exercise 1}
+
+\subsection*{(a)}
+We are given the array
+\begin{align*}
+  A = [17, 15, 17, 13, 6, 12, 10, 1, 5, 3, 1, 11].
+\end{align*}
+
+The heap tree would be
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {17}
+    child {node {15}
+      child {node {13}
+        child {node {1}}
+        child {node {5}}}
+      child {node {6}
+        child {node {3}}
+        child {node {1}}}}
+    child {node {17}
+      child {node {12}
+        child {node {11}}}
+      child {node {10}}};
+\end{tikzpicture}
+\end{center}
+
+This is a heap since all nodes satisfy the max heap property.
+
+\subsection*{(b)}
+We are given the array
+\begin{align*}
+  A = [4, 14, 13, 3, 8, 12, 11, 2, 2, 5, 7, 2].
+\end{align*}
+
+The heap tree would be
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {4}
+    child {node {14}
+      child {node {3}
+        child {node {2}}
+        child {node {2}}}
+      child {node {8}
+        child {node {5}}
+        child {node {7}}}}
+    child {node {13}
+      child {node {12}
+        child {node {2}}}
+      child {node {11}}};
+\end{tikzpicture}
+\end{center}
+
+This is a near heap because only the root node (4) vioaltes the max heap property. Every other node satisfies it. \\
+Steps of heapify operation:
+
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {14}
+    child {node {4}
+      child {node {3}
+        child {node {2}}
+        child {node {2}}}
+      child {node {8}
+        child {node {5}}
+        child {node {7}}}}
+    child {node {13}
+      child {node {12}
+        child {node {2}}}
+      child {node {11}}};
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {14}
+    child {node {8}
+      child {node {3}
+        child {node {2}}
+        child {node {2}}}
+      child {node {4}
+        child {node {5}}
+        child {node {7}}}}
+    child {node {13}
+      child {node {12}
+        child {node {2}}}
+      child {node {11}}};
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {14}
+    child {node {8}
+      child {node {3}
+        child {node {2}}
+        child {node {2}}}
+      child {node {7}
+        child {node {5}}
+        child {node {4}}}}
+    child {node {13}
+      child {node {12}
+        child {node {2}}}
+      child {node {11}}};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{(c)}
+We are given the array
+\begin{align*}
+  A = [20, 10, 12, 9, 8, 3, 10, 13, 10, 15, 3, 7].
+\end{align*}
+
+The heap tree would be
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+  level 1/.style={sibling distance=6cm},
+  level 2/.style={sibling distance=3cm},
+  level 3/.style={sibling distance=1.5cm},
+  level 4/.style={sibling distance=0.75cm}]
+  \node {20}
+    child {node {10}
+      child {node {9}
+        child {node {13}}
+        child {node {10}}}
+      child {node {8}
+        child {node {15}}
+        child {node {3}}}}
+    child {node {12}
+      child {node {3}
+        child {node {7}}}
+      child {node {10}}};
+\end{tikzpicture}
+\end{center}
+
+This is not a heap also not a near heap because multiple nodes violate the max heap property. For example the node with the value 9 and the node with the value 8
+both violates the max heap property and they are not descendants of each other.
+
 \end{document}
