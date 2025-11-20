@@ -277,5 +277,48 @@ Each insertion into a heap takes O(log m) tim  where m is the number of elements
 \textbf{Correctness Proof}: \\
 The algorithm maintains two heaps to keep track of the lower and upper halves of the elements seen so far. By ensuring that the sizes of the heaps differ by at most one, we can determine the median after each insertion. If the heaps are of equal size, the median is the minimum of the upper half (Hhigh). If Hlow has one more element than Hhigh, the median is the maximum of the lower half (Hlow). This approach guarantees that we always have access to the median in O(1) time after each insertion, and thus correctly computes the running median for each prefix of the array A.
 
+\section*{Exercise 5}
+Assume train struct looks like this:
+\begin{verbatim}
+  struct Train {
+    int arrivalTime;
+    int departureTime;
+  };
+\end{verbatim}
+The idea is to sort the arrival and departure times of the trains separately and then use two pointers to traverse these sorted lists.
+
+\begin{verbatim}
+  int MinPlatforms(Train L[1..n])
+    arrivalTimes = new int[1..n]
+    departureTimes = new int[1..n]
+
+    for i = 1 to n do
+      arrivalTimes[i] = L[i].arrivalTime
+      departureTimes[i] = L[i].departureTime
+
+    sort(arrivalTimes) // O(n log n)
+    sort(departureTimes) // O(n log n)
+
+    platformNeeded = 0
+    maxPlatforms = 0
+    i = 1 // pointer for arrivalTimes
+    j = 1 // pointer for departureTimes
+
+    while i <= n and j <= n do
+      if arrivalTimes[i] < departureTimes[j] then
+        platformNeeded++
+        maxPlatforms = max(maxPlatforms, platformNeeded)
+        i++
+      else
+        platformNeeded--
+        j++
+
+    return maxPlatforms
+\end{verbatim}
+\textbf{Running Time Analysis:} \\
+Sorting the arrival and departure times takes O(n log n) time each (for example assume MergeSort() we have seen in the lecture). The while loop runs in O(n) time since each pointer (i and j) traverses the list of trains once. Therefore the overall time complexity of the algorithm is O(n log n). \\
+\textbf{Correctness Proof}: \\
+The algorithm sorts the arrival and departure times of the trains, allowing us to process events in chronological order. By using two pointers, we can track the number of platforms needed at any given time. When a train arrives before the next train departs, we need an additional platform. Conversely when a train departs before the next train arrives, we can free up a platform. The maximum number of platforms needed at any point during this process gives us the minimum number of platforms required for the train station.
+
 
 \end{document}
