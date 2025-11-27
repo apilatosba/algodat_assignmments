@@ -1,0 +1,185 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\section*{\huge Homework Sheet 7}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design or implement an algorithm is to be answered
+% by (1) your algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Recurrences) 2+2+3+3+3 points
+% For each of the following functions defined by a recurrence inequality, give a closed (asymptotic) form
+% by applying the Master theorem. In each case, specify the parameters a, b, d (and s), and state which
+% of the three cases of the Master Theorem presented in the lecture applies.
+% a. f(n) ≤ 5 · f(n/2) + n
+% 2
+% ,
+% b. g(n) ≤ 9 · g(n/3) + n
+% 2
+% ,
+% c. h(n) ≤ 2 · h(n/3) + n log2 n.
+% d. k(n) ≤ 21 · k(n/9) + n
+% 1.5√
+% log n.
+% e. ℓ(n) ≤ 3 · ℓ(n/9) + n
+% 0.1
+% log n,
+% Exercise 2 (Mysterious Divide-and-Conquer) 4+3 points
+% Consider the following divide-and-conquer algorithm Mystery, which takes as input an integer
+% array A of length n. The procedure Concat concatenates two given arrays in linear time.
+% 1: procedure Mystery(A[1 .. n]):
+% 2: if n ≤ 1 then return true
+% 3: if n = 2 then
+% 4: if A[1] ≤ A[2] then return true else return false
+% 5: Split A into three subarrays A1, A2, A3 of lengths ⌊
+% n
+% 3
+% ⌋, ⌊
+% n
+% 3
+% ⌋, n − 2⌊
+% n
+% 3
+% ⌋
+% 6: B1 := Concat(A1, A2)
+% 7: B2 := Concat(A1, A3)
+% 8: B3 := Concat(A2, A3)
+% 9: return Mystery(B1) ∧ Mystery(B2) ∧ Mystery(B3)
+% a. Find out what Mystery(A) computes and prove your claim.
+% b. Use the Master theorem to analyze the running time of the algorithm.
+% 1
+% Exercise 3 (Local Minimum) 10 points
+% You are given an integer array A[1..n] with A[1] ≥ A[2], A[n − 1] ≤ A[n], and n ≥ 3. Your task is to
+% find a (non-strict) local minimum of A: compute an index i ∈ {2, . . . , n − 1} such that A[i − 1] ≥ A[i]
+% and A[i] ≤ A[i + 1]. Design an algorithm to solve this task in time O(log n).
+% Hint: Use Divide and Conquer. Split A in the middle.
+% Exercise 4 (Multiplication) 10 points
+% You are given an integer array A[1..n], where each number fits into one memory cell. Design an
+% algorithm that computes the product of all numbers in A in time O(n
+% log2
+% (3)) ⊂ O(n
+% 1.585). For this
+% task, you may not assume that all intermediate values fit into one memory cell.
+% Hint: The product of i numbers, each fitting into one memory cell, can be stored in i memory cells.
+
+\section*{Exercise 1}
+Remember the master theorem
+\begin{align*}
+   \text{If } \quad &T(n) \leq a \cdot T\left(\frac{n}{b} + r\right) + c \cdot n^d \log^sn \\
+   \text{ then } \quad &T(n) = \begin{cases}
+      O(n^d \log^s n) & \text{if } a < b^d \\
+      O(n^d \log^{s+1} n) & \text{if } a = b^d \\
+      O(n^{\log_b a}) & \text{if } a > b^d \\
+   \end{cases}
+\end{align*}
+
+\subsection*{(a)}
+We are given the recurrence
+\begin{align*}
+   f(n) &\leq 5 \cdot f\left(\frac{n}{2}\right) + n^2
+\end{align*}
+
+Values of paramters are
+\begin{align*}
+   a &= 5 \\
+   b &= 2 \\
+   d &= 2 \\
+   s &= 0
+\end{align*}
+
+Since \( a > b^d \) that is \( 5 > 2^2 \) the third case applies.
+\begin{align*}
+   f(n) &\in O\left(n^{\log_2 5}\right)
+\end{align*}
+
+\subsection*{(b)}
+We are given the recurrence
+\begin{align*}
+   g(n) &\leq 9 \cdot g\left(\frac{n}{3}\right) + n^2
+\end{align*}
+
+Values of parameters are
+\begin{align*}
+   a &= 9 \\
+   b &= 3 \\
+   d &= 2 \\
+   s &= 0
+\end{align*}
+
+Since \( a = b^d \) that is \( 9 = 3^2 \) the second case applies.
+\begin{align*}
+   g(n) &\in O\left(n^2 \log n\right)
+\end{align*}
+
+\subsection*{(c)}
+We are given the recurrence
+\begin{align*}
+   h(n) &\leq 2 \cdot h\left(\frac{n}{3}\right) + n \log^2 n
+\end{align*}
+
+Values of parameters are
+\begin{align*}
+   a &= 2 \\
+   b &= 3 \\
+   d &= 1 \\
+   s &= 2
+\end{align*}
+
+Since \( a < b^d \) that is \( 2 < 3^1 \) the first case applies.
+\begin{align*}
+   h(n) &\in O\left(n \log^2 n\right)
+\end{align*}
+
+\subsection*{(d)}
+We are given the recurrence
+\begin{align*}
+   k(n) &\leq 21 \cdot k\left(\frac{n}{9}\right) + n^{1.5} \sqrt{\log n} \\
+   &= 21 \cdot k\left(\frac{n}{9}\right) + n^{1.5} \log^{0.5} n
+\end{align*}
+
+Values of parameters are
+\begin{align*}
+   a &= 21 \\
+   b &= 9 \\
+   d &= 1.5 \\
+   s &= 0.5
+\end{align*}
+
+Since \( a < b^d \) that is \( 21 < 9^{1.5} = 27 \) the first case applies.
+\begin{align*}
+   k(n) &\in O\left(n^{1.5} \log^{0.5} n\right)
+\end{align*}
+
+\subsection*{(e)}
+We are given the recurrence
+\begin{align*}
+   \ell(n) &\leq 3 \cdot \ell\left(\frac{n}{9}\right) + n^{0.1} \log n
+\end{align*}
+
+Values of parameters are
+\begin{align*}
+   a &= 3 \\
+   b &= 9 \\
+   d &= 0.1 \\
+   s &= 1
+\end{align*}
+
+Since \( a > b^d \) that is \( 3 > 9^{0.1} \) the third case applies.
+\begin{align*}
+   \ell(n) &\in O\left(n^{\log_9 3}\right) = O\left(n^{0.5}\right) = O\left(\sqrt{n}\right)
+\end{align*}
+
+\end{document}
