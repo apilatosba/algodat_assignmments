@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+\section*{\huge Homework Sheet 8}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design or implement an algorithm is to be answered by (1)
+% your algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Coin Flips) 2+2+2+2+2 points
+% Alice repeatedly flips a fair coin until the sequence of flips satisfies some condition. By a fair coin
+% we mean that the outcome of each coin flip is independent from the rest, and lands heads or tails
+% with the same probability 1/2. For each of the conditions below, your task is to compute the exact
+% expected number of flips until the condition is met. Justify each of your answers.
+% a. Alice has flipped n times.
+% b. Alice has flipped heads at least once.
+% c. Alice has flipped heads at least n times (not necessarily consecutively).
+% d. Alice has flipped tails at least 3 times in a row.
+% e. The values Alice has flipped differed from the previous flip at least n times (not necessarily
+% consecutively).
+% Exercise 2 (Generalized Abundant Choice) 5+5 points
+% a. You are given an array A[1, . . . , n] containing only zeros and ones, and an integer k ≥ 1, with
+% the guarantee that A contains exactly k ones. Design an algorithm with expected running time
+% O(n/k) that computes an index of a one in A.
+% b. You are given an array A[1, . . . , n] containing only zeros and ones, and an integer k ≥ 1. Design a
+% randomized O(n/k)-time algorithm that distinguishes the two cases (1) A contains only zeros and
+% (2) A contains at least k ones. Your algorithm must be correct with probability at least 0.999.
+% That is, if A contains only zeros then your algorithm should return “1” with probability at least
+% 0.999, and if A contains at least k ones then your algorithm should return “2” with probability at
+% least 0.999.
+% Hint: The behavior of your algorithm may be arbitrary if the input does not satisfy the requirements
+% stated in the tasks.
+% 1
+% Exercise 3 (Permutation) 10 points
+% Design an O(n) algorithm that given an array A[1, . . . , n] permutes A uniformly at random. That is,
+% after running your algorithm, A still contains the same elements as before, but in a random ordering.
+% Ensure that each of the n! orderings is equally likely.
+% Hint: It is useful to construct this permutation one element at a time.
+% Exercise 4 (Corrupted Measurements) 5+5 points
+% Consider a linear function f(x) = ax + b. You are given n measurements (x1, y1), . . . ,(xn, yn). Some
+% of these measurements are corrupted, meaning that yi can be arbitrary. Note that we do not know
+% which of the measurements are corrupted. For the remaining non-corrupted measurements we have
+% yi = f(xi). Assuming that at least n
+% 2 + 1 of the measurements are non-corrupted, the task is to design
+% an algorithm which reconstructs the function f. More precisely, the input to the problem is an array
+% [(x1, y1), . . . ,(xn, yn)] where the xi
+% ’s are distinct, and the output should be the coefficients a, b which
+% define the function f(x) = ax + b that agrees with all the non-corrupted measurements.
+% a. Design a deterministic algorithm which reconstructs f in time O(n
+% 3
+% ). (For a fun challenge not
+% worth any points, try improving the running time to O(n
+% 2
+% ).)
+% b. Design a randomized algorithm which reconstructs f in expected time O(n).
+
+\section*{Exercise 3}
+\begin{verbatim}
+void Permute(A[1..n])
+   if (n == 1) return
+   int randomIndex = rand(n) // rand() function from the lecture
+   swap(A[1], A[randomIndex])
+   Permute(A[2..n])
+\end{verbatim}
+\textbf{Correctness Proof:} \\
+We will prove by induction that the algorithm produces a uniform random permutation of the array A[1..n]. \\
+\textbf{Base Case:} For n = 1, there is only one permutation possible, which is the array itself. The algorithm correctly returns A[1..1]. \\
+\textbf{Inductive Step:} Assume that the algorithm produces a uniform random permutation for arrays of size k - 1. We need to show that it also works for an array of size k. \\
+The algorithm selects a random index from 1 to k and swaps the element at that index with the first element. This means that each of the n elements has an equal probability of being placed in the first position, which is 1/k. \\
+After placing one element in the first position, the algorithm recursively permutes the remaining k-1 elements. By the inductive hypothesis, the recursive call produces a uniform random permutation of the remaining elements. \\
+Therefore, by induction, the algorithm produces a uniform random permutation for any array of size n. \\
+\\
+\textbf{Running Time Analysis:} \\
+The algorithm makes a single swap and then makes a recursive call on an array of size n-1. The time complexity can be expressed as:
+\begin{align*}
+   T(1) &= 1 \\
+   T(n) &= T(n-1) + 1 \quad \text{for } n > 1 \\
+   &\Rightarrow T(n) = O(n)
+\end{align*}
+
+
+
+\end{document}
