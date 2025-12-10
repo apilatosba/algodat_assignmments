@@ -91,7 +91,139 @@ Hence the expected number of flips until three consecutive tails appear is
 \]
 
 \end{enumerate}
+% --------------------------------------------------------------------
+% ----------------------------- EXERCISE 2 ---------------------------
+% --------------------------------------------------------------------
 
+\section*{Exercise 2}
+\begin{enumerate}
+    \item \begin{verbatim}
+    Solution (A[1,..n]):
+        repeat:
+            i := rand(n)
+            if A[i] = 1: return i
+    \end{verbatim}
+    \textbf{Correctness Proof:} \\
+    from the lecture, it is correct.\\
+    \textbf{Time Analysis:}\\
+Let $T$ be the number of iterations of the loop.  
+In each iteration we pick a uniformly random index $i \in \{1,\dots,n\}$.
+Since the array contains exactly $k$ ones, we have
+\[
+\Pr[A[i] = 1] = \frac{k}{n}
+\qquad\text{and}\qquad
+\Pr[A[i] = 0] = 1 - \frac{k}{n}.
+\]
+
+We compute $\mathbb{E}[T]$ using an indirect argument.  
+We condition on the outcome of the first iteration:
+\[
+\mathbb{E}[T]
+    = \Pr[A[i] = 1]\cdot 1
+      + \Pr[A[i] = 0]\cdot (1 + \mathbb{E}[T']),
+\]
+where $T'$ is the number of \emph{additional} iterations if the first attempt fails.
+Since $T$ and $T'$ have the same distribution, we substitute $T' \sim T$:
+\[
+\mathbb{E}[T]
+    = \frac{k}{n}\cdot 1
+      + \Bigl(1 - \frac{k}{n}\Bigr)\cdot (1 + \mathbb{E}[T]).
+\]
+
+Expanding and solving:
+\[
+\mathbb{E}[T]
+    = \frac{k}{n} + \Bigl(1 - \frac{k}{n}\Bigr)
+      + \Bigl(1 - \frac{k}{n}\Bigr)\mathbb{E}[T]
+    = 1 + \Bigl(1 - \frac{k}{n}\Bigr)\mathbb{E}[T].
+\]
+
+Rearranging:
+\[
+\frac{k}{n}\,\mathbb{E}[T] = 1
+\qquad\Longrightarrow\qquad
+\mathbb{E}[T] = \frac{n}{k}.
+\]
+
+Each iteration takes $O(1)$ time, so the expected running time is O(n/k).
+
+   \item \begin{verbatim}
+    Solution (A[1,..n], k):
+          c := 1
+          repeat:
+            i := rand(n)
+            if A[i] = 1: return 2
+            if 1- (1 - k/n)^c >= 0.999: return 1
+            c:= c+1
+    \end{verbatim}
+\textbf{Correctness Proof:}\\
+
+We analyze the behavior of the algorithm in the two cases specified in the problem.
+
+\paragraph{Case 1: $A$ contains only zeros.}
+In this case, every sampled index $i$ satisfies $A[i] = 0$, so the algorithm never returns~2.
+The algorithm terminates only when
+\[
+1 - (1 - k/n)^c \ge 0.999,
+\]
+and at that point it returns~1.  
+Thus, in the all-zero case the algorithm outputs~1 with probability~1,
+which is at least the required~$0.999$.
+
+\paragraph{Case 2: $A$ contains at least $k$ ones.}
+In each iteration, a uniformly random index is sampled.  
+Since the array contains at least $k$ ones, the probability of sampling a~1 in
+any given iteration is at least $k/n$.
+Let $c$ be the number of iterations performed.
+The probability that the algorithm \emph{fails} to see any 1 during the first $c$ samples is at most
+\[
+(1 - k/n)^c.
+\]
+The algorithm stops and outputs~1 only if
+\[
+1 - (1 - k/n)^c \ge 0.999,
+\quad\text{ i.e., }\quad
+(1 - k/n)^c \le 0.001.
+\]
+Thus the probability that the algorithm incorrectly outputs~1 in this case is at most $0.001$.
+Otherwise, it must have encountered a position $i$ such that $A[i]=1$,
+and it outputs~2.
+Therefore, when $A$ contains at least $k$ ones, the algorithm outputs~2
+with probability at least $0.999$.
+
+\medskip
+Combining both cases, the algorithm satisfies the required $0.999$ success probability.\\
+\textbf{Time analysis:}\\
+If the algorithm encounters a 1 then it would be the same as the one above.
+If the algorithm does not encounter a 1, then by the stopping condition we have
+\[
+(1 - k/n)^c \le 0.001.
+\]
+Taking natural logarithms of both sides gives
+\[
+c\ln(1 - k/n) \le \ln(0.001).
+\]
+Note that \(\ln(1 - k/n)<0\), so dividing by \(\ln(1 - k/n)\) (which reverses no sign here because both sides are negative) yields
+\[
+c \ge \frac{\ln(0.001)}{\ln(1 - k/n)}.
+\]
+We now use the inequality \(\ln(1-x)\le -x\) valid for \(0<x<1\). With \(x=k/n\) this gives \(\ln(1-k/n)\le -k/n\). Hence
+\[
+\frac{\ln(0.001)}{\ln(1 - k/n)}
+\ge \frac{\ln(0.001)}{-\,k/n}
+= \frac{n}{k}\,\ln(1000).
+\]
+Therefore
+\[
+c \ge \frac{n}{k}\,\ln(1000) = \Theta\!\left(\frac{n}{k}\right).
+\]
+Each iteration performs \(O(1)\) work (one random index and one array access), so the total running time is
+\[
+c\cdot O(1)=O\!\left(\frac{n}{k}\right).
+\]
+Thus the algorithm runs in \(O(n/k)\) time.
+
+\end{enumerate}
 % --------------------------------------------------------------------
 % ----------------------------- EXERCISE 3 ---------------------------
 % --------------------------------------------------------------------
@@ -124,10 +256,6 @@ so the running time is
 \[
 T(n) = O(n).
 \]
-
-% --------------------------------------------------------------------
-% ----------------------------- EXERCISE 4 ---------------------------
-% --------------------------------------------------------------------
 \section*{Exercise 4}
 \begin{enumerate}
     \item 
@@ -220,7 +348,7 @@ O(n^2) \cdot O(n) = O(n^3).
 \textbf{Therefore, the overall running time of the algorithm is $O(n^3)$.}
 \item\begin{verbatim}
 CorruptedRand(A[(x1,y1), (x2,y2) .... (xn,yn)])
-     while true:    
+     repeat:    
          i:= Rand(n)
          j:= Rand(n)
          if i != j:
