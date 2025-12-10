@@ -125,4 +125,198 @@ so the running time is
 T(n) = O(n).
 \]
 
+% --------------------------------------------------------------------
+% ----------------------------- EXERCISE 4 ---------------------------
+% --------------------------------------------------------------------
+\section*{Exercise 4}
+\begin{enumerate}
+    \item 
+\begin{verbatim}
+Corrupted(A[(x1,y1), (x2,y2) .... (xn,yn)])
+   for i := 1,2,... n:
+      for j := i + 1, ... n:
+         a := (A[i].second - A[j].second) / (A[i].first - A[j].first)
+         b := A[i].second - a * A[i].first
+         count := 0
+         for k := 1, 2 ,...n:
+            if A[k].second = a * A[k].first + b:
+              count := count + 1
+            if count >= n/2+1:
+              return (a,b)
+\end{verbatim}
+\textbf{Correctness Proof:}
+
+We are given that at least $\frac{n}{2} + 1$ of the input points 
+$(x_i, y_i)$ are non--corrupted, meaning that for these points
+\[
+y_i = ax_i + b
+\]
+for the true underlying coefficients $a,b$.  
+
+\medskip
+\noindent
+\textit{(1) If the algorithm outputs $(a,b)$, then it is the correct line.}
+
+The algorithm returns $(a,b)$ only if the computed line
+\[
+y = ax + b
+\]
+agrees with at least $\frac{n}{2}+1$ of the points.  
+By assumption, the true line agrees with at least $\frac{n}{2}+1$ points 
+(the non--corrupted ones).  
+Any incorrect line can agree with at most $\frac{n}{2}$ points, since 
+there are fewer than $\frac{n}{2}$ corrupted points.  
+Therefore, if a line agrees with $\frac{n}{2}+1$ points, it must be the
+unique correct line.  
+Hence, whenever the algorithm returns $(a,b)$, the returned line is correct.
+
+\medskip
+\noindent
+\textit{(2) The algorithm is guaranteed to find the correct line.}
+
+Since more than half of the points are non--corrupted, there exist at least
+\[
+\binom{\frac{n}{2}+1}{2}
+\]
+distinct pairs $(i,j)$ of non--corrupted points.  
+For any such pair, the algorithm computes
+\[
+a = \frac{y_j - y_i}{x_j - x_i}, \qquad 
+b = y_i - ax_i,
+\]
+which are exactly the true coefficients of the underlying line.  
+When the algorithm checks this line against all $n$ points, it will find 
+at least $\frac{n}{2}+1$ matches and therefore return the correct pair
+$(a,b)$.  
+Thus, because the algorithm examines \emph{all} pairs $(i,j)$, it is certain
+to eventually test a pair of non--corrupted points and return the correct line.
+
+\medskip
+\noindent
+\text{Therefore, the algorithm always returns the correct coefficients $(a,b)$.}
+
+\bigskip
+\textbf{Time Analysis:}
+
+The algorithm consists of three nested loops.  
+The outer two loops iterate over all pairs $(i,j)$ with $1 \le i < j \le n$,
+which is
+\[
+\sum_{i=1}^n (n-i)
+= \frac{n(n-1)}{2}
+= O(n^2)
+\]
+pairs.  
+For each pair, the algorithm checks all $n$ points to count how many lie on the
+candidate line, which takes $O(n)$ time.
+
+Thus, the total running time is
+\[
+O(n^2) \cdot O(n) = O(n^3).
+\]
+
+\medskip
+\noindent
+\textbf{Therefore, the overall running time of the algorithm is $O(n^3)$.}
+\item\begin{verbatim}
+CorruptedRand(A[(x1,y1), (x2,y2) .... (xn,yn)])
+     while true:    
+         i:= Rand(n)
+         j:= Rand(n)
+         if i != j:
+           a := (A[i].second - A[j].second) / (A[i].first - A[j].first)
+           b := A[i].second - a * A[i].first
+           count := 0
+           for k := 1, 2 ,...n:
+              if A[k].second = a * A[k].first + b:
+                count := count + 1
+              if count >= n/2+1:
+                return (a,b)
+         
+\end{verbatim}
+\textbf{Correctness Proof:}
+
+We are given that at least $\frac{n}{2}+1$ of the input points 
+$(x_i,y_i)$ satisfy the true linear relation
+\[
+y_i = ax_i + b,
+\]
+while the remaining points may be arbitrary.  
+
+\medskip
+\noindent
+\textit{(1) If the algorithm outputs $(a,b)$, then the output is correct.}
+
+The algorithm returns $(a,b)$ only when the line $y=ax+b$ agrees with 
+at least $\frac{n}{2}+1$ points in the input.  
+By assumption, the true line agrees with all non--corrupted points, and there are at least 
+$\frac{n}{2}+1$ such points.  
+Conversely, any incorrect line can agree with at most the number of corrupted points, which is 
+strictly less than $\frac{n}{2}$.  
+Therefore, a line that matches $\frac{n}{2}+1$ or more points must be the unique correct line.
+Hence the algorithm can only return the correct coefficients.
+
+\medskip
+\noindent
+\textit{(2) The algorithm finds the correct line with constant probability on each iteration.}
+
+On each recursive iteration, the algorithm chooses two indices $i$ and $j$ independently and uniformly
+at random from $\{1,\dots,n\}$.  
+Since more than half the points are non--corrupted, the probability that both chosen points 
+are non--corrupted is
+\[
+p \;=\; 
+\frac{\frac{n}{2}+1}{n} \cdot \frac{\frac{n}{2}}{n-1}
+\;=\;
+\Theta(1).
+\]
+If both points are non--corrupted, then the computed values
+\[
+a = \frac{y_j - y_i}{x_j - x_i}, \qquad
+b = y_i - ax_i,
+\]
+are exactly the true coefficients of the underlying line.  
+In this case the line agrees with all non--corrupted points and therefore 
+with at least $\frac{n}{2}+1$ points.  
+Thus the algorithm will return $(a,b)$ and terminate.
+
+\smallskip
+If one or both of the chosen points are corrupted, the line constructed is incorrect and cannot
+agree with $\frac{n}{2}+1$ points.  
+In this case the algorithm rejects the line and repeats the process.  
+Because the probability of success on each iteration is a positive constant $p$, 
+the expected number of iterations before success is 
+\[
+\mathbb{E}[\text{iterations}] = \frac{1}{p} = O(1).
+\]
+
+\medskip
+\noindent
+Thus the randomized algorithm always returns the correct line and succeeds in a constant expected number of iterations.
+
+\bigskip
+\textbf{Time Analysis:}
+
+Each iteration of the algorithm performs the following work:
+
+\begin{itemize}
+    \item randomly selects two indices $i$ and $j$, which takes $O(1)$ time;
+    \item computes $a$ and $b$, which takes $O(1)$ time;
+    \item scans all $n$ points to check how many lie on the resulting line, which takes $O(n)$ time.
+\end{itemize}
+
+Thus each iteration costs $O(n)$ time.  
+Since the algorithm succeeds with constant probability on each iteration, the expected number of 
+iterations before termination is $O(1)$.  
+Therefore, the total expected running time is
+\[
+O(1) \cdot O(n) = O(n).
+\]
+
+\medskip
+\noindent
+\textbf{Hence the randomized algorithm runs in expected time $O(n)$}.
+
+\end{enumerate}
+
 \end{document}
