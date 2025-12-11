@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+
+\section*{\huge Homework Sheet 9}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design or implement an algorithm is to be answered by (1) your
+% algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Chaining and Linear Probing) 3+3 points
+% Consider a hash table of size B = 8 and the following sequence of keys k (with hash values h(k)) to
+% be inserted.
+% k 33 85 11 63 2 94 42
+% h(k) 6 2 1 1 7 3 6
+% a. Insert the keys into the hash table and resolve collisions by chaining. Draw the state of the hash
+% table after every insertion.
+% b. Insert the same keys into the hash table and resolve collisions by linear probing. Draw the state of
+% the hash table after every insertion.
+% Exercise 2 (Random Element) 7+3 points
+% Consider a hash table H. In this exercise, we want to design a procedure RandomElement(H) that
+% given access to H returns an uniformly random element contained in H in expected time O(1).
+% a. Show how to implement RandomElement(H) given that H uses hashing with linear probing
+% and has B = Θ(n) buckets.
+% b. Why does your approach fail if H uses hashing with chaining?
+% Exercise 3 (Fingerprinting) 10 points
+% Consider the following problem: Given a matrix M ∈ {0, 1}
+% n×n
+% represented as a two-dimensional
+% array, decide whether M has duplicate rows. Design a randomized algorithm for this problem running
+% in expected time O(n
+% 2
+% ).
+% Hint: To use hashing, you have to specify what and how you hash. Beware of collision handling!
+% Exercise 4 (Universal Hashing) 4+4+6 points
+% Let B be a prime number and U > B. Recall that a hash function h : {1, . . . , U} → {1, . . . , B}
+% needs to be initialized before it is used, and the initialization uses randomness. Recall that we call h
+% 1
+% universal if for any two different keys k, k′ we have P[h(k) = h(k
+% ′
+% )] ≤ O(1/B) (where the randomness
+% comes from the initialization of the hash function). For this exercise, we call h random collision
+% avoiding if for two keys k, k′
+% chosen uniformly at random, we have P[h(k) = h(k
+% ′
+% )] ≤ O(1/B) (where
+% the randomness comes from the initialization of the hash function as well as the random choice of the
+% keys k, k′
+% ). Note that universal is a much stronger property than random collision avoiding.
+% Also recall that rand(B) generates a random number in {1, . . . , B}. In this exercise, x mod B
+% is defined as the unique number y ∈ {1, . . . , B} such that x − y is a multiple of B. Consider the
+% following hash functions.
+% a. In the initiallization we pick a random number a = rand(B). Define the hash function h by
+% h(k) := (ak) mod B.
+% Prove that h is random collision avoiding, but not universal.
+% b. In the initiallization we pick a random number b = rand(B). Define the hash function h by
+% h(k) := (k + b) mod B.
+% Prove that h is random collision avoiding, but not universal.
+% c. Recall linear hashing from the lecture, and let again wB = ⌊log2 B⌋ as well as d = ⌊log2
+% (U)/wB⌋.
+% For the initialization, we chose d + 1 numbers a0, . . . , ad ∈ {1, . . . , B} uniformly at random. To
+% define the hash function, we split the bits of the key k into parts of width wB, obtaining the
+% numbers k0, . . . , kd ∈ {0, . . . , 2
+% wB − 1}. We defined
+% h(k) :=
+% 
+% 
+% X
+% 0≤i≤d
+% aiki
+% 
+%  mod B.
+% For this exercise, we now consider the slight variation, where we fix a0 := 1 and only choose the
+% numbers a1, . . . , ad uniformly at random. Show that this variation is random collision avoiding as
+% well as universal.
+
+
+
+\end{document}
