@@ -1,0 +1,136 @@
+\documentclass{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\begin{document}
+
+\section*{\huge Homework Sheet 11}
+\begin{flushright}
+  \begin{tabular}{@{} l l l @{}}
+    \textbf{Author} & \textbf{Matriculation Number} & \textbf{Tutor} \\
+    Abdullah Oğuz Topçuoğlu         & 7063561 & Maryna Dernovaia \\
+    Ahmed Waleed Ahmed Badawy Shora & 7069708 & Jan-Hendrik Gindorf \\
+    Yousef Mostafa Farouk Farag     & 7073030 & Thorben Johr \\
+  \end{tabular}
+\end{flushright}
+
+% Please note: An exercise that asks you to design or implement an algorithm is to be answered by (1) your
+% algorithm in pseudocode, (2) a correctness proof, and (3) a running time analysis.
+% Exercise 1 (Shortest Paths) 6+6 points
+% Consider the following weighted directed graph. Note that it does not contain negative-weight cycles.
+% 1 2
+% 3 4
+% 5
+% 6 7
+% 3
+% −1
+% 0
+% −1
+% 3
+% −3
+% 5
+% 2
+% −4 5
+% 4
+% 3
+% a. Run the Bellman-Ford algorithm to compute the shortest path distances from 1 to all other
+% nodes. Give the state of the array d[1, . . . , 7] after each iteration over all edges. Process edges in
+% lexicographic order. That is, consider the edges in the order (1,2), (1,3), (1,4), (2,4), (3,7), (4,3),
+% (4,6), (5,7), (6,2), (6,5), (6,7), (7,2).
+% b. Since this graph contains edges of negative weight, we do not expect Dijkstra’s algorithm to
+% work. Nevertheless, run Dijkstra’s algorithm on this graph from node 1. Give the state of the
+% array d[1, . . . , 7] after each iteration. Compare the result to the output of Bellman-Ford’s algorithm,
+% and convince yourself that the output is indeed wrong.
+% Exercise 2 (Urgent Delivery) 9 points
+% Let G = (V, E, w) be a directed weighted graph with nonnegative edge weights, where the nodes model
+% cities, the edges model streets and the weights model the travelling times of the streets. Imagine that
+% you are running a delivery company with exactly three clients located in cities s1, s2, and s3. Design
+% an O((m + n)log n) algorithm that, given G, s1, s2, and s3, computes a city t that minimizes the
+% delivery time to the furthest client.
+% 1
+% Exercise 3 (Snakes and Ladders) 9 points
+% The game “Snakes and Ladders” is played on a board with n fields labeled 1, 2, . . . , n. See Figure 1 for
+% an instance with n = 100 where we arranged the fields row-by-row. In addition, on the board there
+% are snakes and ladders connecting arbitrary fields to each other. A snake is a pair (i, j) with i > j
+% (the head and tail of the snake) and a ladder is a pair (i, j) with i < j (the bottom and top of the
+% ladder). Let S, L denote the sets of snakes and ladders respectively. The goal of the game is to move
+% from field 1 to field n, by the following rules:
+% ■ If you are standing on field i and there is a snake (i, j) ∈ S (with its head on i), then you must
+% move to j (the tail of the snake).
+% ■ If you are standing on field i and there is a ladder (i, j) ∈ L (with its bottom on i), you may move
+% to j (the top of the ladder).
+% ■ Otherwise, move to i + 1.
+% Design an algorithm to compute the smallest number of steps to move from 1 to n on a given Snakes
+% and Ladders board. Your algorithm should run in time O(n + |S| + |L|).
+% Exercise 4 (Shortest Shortest Paths) 5+5 points
+% Let G = (V, E, w) be a weighted graph with positive integer edge weights. Recall that while we often
+% speak about “the shortest path” between nodes s and t, there can be several shortest paths. Let Pst
+% denote the set of shortest paths from s to t.
+% a. Design an O((m + n)log n) algorithm to return a path from Pst with the smallest-possible number
+% of edges.
+% b. Design an O((m + n)log n) algorithm to return a path from Pst with the largest-possible number
+% of edges.
+% Hint: Define new edge weights w
+% ′
+% (e) and run a shortest path algorithm with respect to the weights w
+% ′
+% .
+% Figure 1: Illustrates an instance of Snakes and Ladders for n = 100 (where the fields are nicely
+% arranged). For this board, the best solution is to move 1, . . . , 4, 14, . . . , 28, 76, . . . , 80, 99, 100.
+% https://www.ymimports.com/pages/how-to-play-snakes-and-ladders
+
+\section*{Exercise 3}
+We will traverse the board using BFS and thats it. The board is a directed graph. The ladders and snakes create edges between the nodes and we have edges between
+consecutive nodes if there is no snake head at that node. Assuming the board data is given as two lists (snakes and latters) and a number n for grid size, we will first
+create a graph and then run BFS on it. \\
+\textbf{Pseudocode:} \\
+\begin{verbatim}
+  int SmallestNumberOfSteps(int n, list of (int, int) snakes, list of (int, int) ladders)
+    // Create graph
+    graph G
+    for i from 1 to n do
+      G.addNode(i)
+
+    for i from 1 to n-1 do
+        G.addEdge(i, i+1) // if there is a snake head, we will remove the edge below
+    for each (i, j) in snakes do
+      if G.hasEdge(i, i+1) then
+        G.removeEdge(i, i+1)
+      G.addEdge(i, j)
+    for each (i, j) in ladders do
+      G.addEdge(i, j)
+
+    // BFS
+    queue Q
+    array visited // initially all false
+    array distance // initially all infinity
+    Q.enqueue(1)
+    visited.add(1)
+    distance[1] = 0
+
+    while not Q.isEmpty() do
+      current = Q.dequeue()
+      for each neighbor in G.getNeighbors(current) do
+        if neighbor not in visited then
+          visited.add(neighbor)
+          distance[neighbor] = distance[current] + 1
+          Q.enqueue(neighbor)
+
+    return distance[n]
+\end{verbatim}
+
+\textbf{Correctness:} \\
+In the graph representation the "the smallest number of steps to move from 1 to n" is equivalent to finding the shortest path from node 1 to node n.
+BFS is guaranteed to find the shortest path in an unweighted graph. Since each move from one node to another is considered as one step, BFS will correctly compute the smallest number of steps required to reach node n from node 1.
+
+\textbf{Running Time Analysis:} \\
+Creating the graph takes O(n + \(|S|\) + \(|L|\)) time.
+Running BFS takes O(n + m) time, where m is the number of edges in the graph. In our case, m is at most O(n + \(|S|\) + \(|L|\)) since each node can have edges to its next node, and additional edges from snakes and ladders.
+Thus, the overall time complexity of the algorithm is O(n + \(|S|\) + \(|L|\)).
+
+\end{document}
