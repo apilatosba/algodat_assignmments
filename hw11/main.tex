@@ -84,6 +84,68 @@
 % arranged). For this board, the best solution is to move 1, . . . , 4, 14, . . . , 28, 76, . . . , 80, 99, 100.
 % https://www.ymimports.com/pages/how-to-play-snakes-and-ladders
 
+\section*{Exercise 2}
+\begin{verbatim}
+    MinimizeFurthestDelivery(G, s1, s2, s3):
+    //we return the distance array from running Dijkstra and save it to d1,d2, d3 respectively
+      d1 = Dijkstra(G, s1)  
+      d2 = Dijkstra(G, s2)
+      d3 = Dijkstra(G, s3)
+
+      best = infinity
+      t = 0  
+
+      for each v in V:
+          temp = max(d1[v], d2[v], d3[v])
+          if temp < best:
+              best = temp
+              t = v
+
+      return t
+
+\end{verbatim}
+\paragraph{Correctness Proof}
+
+We show that the algorithm returns a city $t$ that minimizes the delivery time to the furthest client.
+
+Since all edge weights in $G$ are nonnegative, Dijkstra’s algorithm correctly computes shortest-path
+distances. Therefore, for each $i \in \{1,2,3\}$ and for every vertex $v \in V$, the value $d_i[v]$
+computed by the algorithm equals the minimum travel time from $s_i$ to $v$.
+
+For any vertex $v \in V$, the delivery time to the furthest client located at $s_1, s_2, s_3$ is
+\[
+M(v) = \max\{ d(s_1,v), d(s_2,v), d(s_3,v) \}.
+\]
+
+The algorithm explicitly computes $M(v)$ for each vertex $v$ and maintains a variable \texttt{best}
+that stores the smallest value of $M(v)$ seen so far, together with the corresponding vertex $t$.
+After the loop terminates, \texttt{best} equals
+\[
+\min_{v \in V} M(v),
+\]
+and the stored vertex $t$ satisfies
+\[
+t = \arg\min_{v \in V} \max\{ d(s_1,v), d(s_2,v), d(s_3,v) \}.
+\]
+
+Hence, the algorithm returns a city that minimizes the delivery time to the furthest client and is
+therefore correct. \qed
+
+---
+
+\paragraph{Runtime Analysis}
+
+Each call to Dijkstra’s algorithm runs in $O((m+n)\log n)$ time.
+The algorithm runs Dijkstra three times, which results in a total time of
+\[
+O((m+n)\log n).
+\]
+
+The final loop iterates once over all vertices and performs constant-time operations per vertex,
+which takes $O(n)$ time. This does not affect the asymptotic running time.
+
+
+
 \section*{Exercise 3}
 We will traverse the board using BFS and thats it. The board is a directed graph. The ladders and snakes create edges between the nodes and we have edges between
 consecutive nodes if there is no snake head at that node. Assuming the board data is given as two lists (snakes and latters) and a number n for grid size, we will first
