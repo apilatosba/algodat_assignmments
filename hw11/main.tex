@@ -103,7 +103,7 @@ create a graph and then run BFS on it. \\
         G.removeEdge(i, i+1)
       G.addEdge(i, j)
     for each (i, j) in ladders do
-      G.addEdge(i, j)
+      G.addEdge(i, j)  // assuming ladders can't be on the same cells as snakes
 
     // BFS
     queue Q
@@ -132,5 +132,102 @@ BFS is guaranteed to find the shortest path in an unweighted graph. Since each m
 Creating the graph takes O(n + \(|S|\) + \(|L|\)) time.
 Running BFS takes O(n + m) time, where m is the number of edges in the graph. In our case, m is at most O(n + \(|S|\) + \(|L|\)) since each node can have edges to its next node, and additional edges from snakes and ladders.
 Thus, the overall time complexity of the algorithm is O(n + \(|S|\) + \(|L|\)).
+\section*{Exercise 4}
+\textbf{a)} \begin{verbatim}
+    W'(u,v):
+      return (n+1) * w(u,v) +1
+    Relax (u,v):
+      if d[u] + w'(u,v) < d[v]
+         d[v] = d[u] + w'(u,v)
+         partent[v] = u
+    Algo (node s):
+       Dijkstra s
+\end{verbatim}
+\textbf{b)} 
+\begin{verbatim}
+    W'(u,v):
+      return (n+1) * w(u,v) - 1
+    Relax (u,v):
+      if d[u] + w'(u,v) < d[v]
+         d[v] = d[u] + w'(u,v)
+         partent[v] = u
+    Algo (node s):
+       Dijkstra s
+\end{verbatim}
+\paragraph{Correctness Proof}
+
+Let $G=(V,E,w)$ be a graph with positive integer edge weights and let $n=|V|$.
+Let $d(s,t)$ denote the shortest-path distance from $s$ to $t$ with respect to $w$.
+
+\subparagraph{Part (a): Minimum number of edges}
+
+Define modified edge weights
+\[
+w'(u,v) = (n+1)\cdot w(u,v) + 1.
+\]
+
+For any path $P$,
+\[
+\sum_{e\in P} w'(e)
+= (n+1)\sum_{e\in P} w(e) + |P|.
+\]
+
+Since all edge weights are positive integers, if two paths $P_1$ and $P_2$ satisfy
+\[
+\sum w(P_1) > \sum w(P_2),
+\]
+then
+\[
+\sum w(P_1) \ge \sum w(P_2) + 1.
+\]
+
+Any simple path contains at most $n-1$ edges, hence
+\[
+|P_1| - |P_2| \ge -(n-1).
+\]
+
+Therefore,
+\[
+\sum w'(P_1) - \sum w'(P_2)
+\ge (n+1)\cdot 1 - (n-1) > 0.
+\]
+
+Thus, minimizing total weight with respect to $w'$ implies minimizing total weight with respect to $w$.
+Among all shortest paths, the first term is constant, so minimizing $w'$ is equivalent to minimizing $|P|$.
+Since $w'(e)>0$ for all edges, Dijkstra's algorithm correctly finds such a path.
+
+\subparagraph{Part (b): Maximum number of edges}
+
+Define modified edge weights
+\[
+w'(u,v) = (n+1)\cdot w(u,v) - 1.
+\]
+
+For any path $P$,
+\[
+\sum_{e\in P} w'(e)
+= (n+1)\sum_{e\in P} w(e) - |P|.
+\]
+
+By the same argument as in part (a), minimizing $w'$ enforces
+\[
+\sum w(P) = d(s,t).
+\]
+
+Among all shortest paths, minimizing $\sum w'(P)$ is equivalent to maximizing $|P|$.
+Moreover,
+\[
+w'(u,v) \ge (n+1)\cdot 1 - 1 = n \ge 1,
+\]
+so all modified weights are positive and Dijkstra’s algorithm applies.
+
+\paragraph{Runtime Analysis}
+
+Computing modified weights takes $O(m)$ time.
+Running Dijkstra’s algorithm with a binary tree takes
+\[
+O((m+n)\log n).
+\]
+
 
 \end{document}
