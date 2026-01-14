@@ -84,6 +84,122 @@
 % arranged). For this board, the best solution is to move 1, . . . , 4, 14, . . . , 28, 76, . . . , 80, 99, 100.
 % https://www.ymimports.com/pages/how-to-play-snakes-and-ladders
 
+\section*{Exercise 1}
+\subsection*{a) Bellman--Ford Algorithm}
+
+\paragraph{Initialization}
+\[
+d^{(0)} = [0,\infty,\infty,\infty,\infty,\infty,\infty].
+\]
+
+Since $|V|=7$, Bellman--Ford performs $6$ iterations.
+
+\paragraph{Iteration 1}
+\[
+d^{(1)} = [0,3,-2,-1,7,2,2].
+\]
+
+\paragraph{Iteration 2}
+\[
+d^{(2)} = [0,3,-2,-1,7,2,1].
+\]
+
+\paragraph{Iteration 3}
+\[
+d^{(3)} = [0,3,-2,-1,7,2,1].
+\]
+
+\paragraph{Iteration 4}
+\[
+d^{(4)} = [0,3,-2,-1,7,2,1].
+\]
+
+\paragraph{Iteration 5}
+\[
+d^{(5)} = [0,3,-2,-1,7,2,1].
+\]
+
+\paragraph{Iteration 6}
+\[
+d^{(6)} = [0,3,-2,-1,7,2,1].
+\]
+
+\paragraph{Final Bellman--Ford Distances}
+\[
+\boxed{d = [0,3,-2,-1,7,2,1]}.
+\]
+
+%-------------------------------------------------
+
+\subsection*{b) Dijkstra’s Algorithm}
+
+Although the graph contains negative-weight edges, we nevertheless execute Dijkstra’s algorithm
+from source node $1$.
+
+\paragraph{Initialization}
+\[
+d = [0,\infty,\infty,\infty,\infty,\infty,\infty].
+\]
+
+\paragraph{Iteration 1 (settle node 1)}
+\[
+d = [0,3,-1,0,\infty,\infty,\infty].
+\]
+
+\paragraph{Iteration 2 (settle node 3)}
+\[
+d = [0,3,-1,0,\infty,\infty,2].
+\]
+
+\paragraph{Iteration 3 (settle node 4)}
+\[
+d = [0,3,-1,0,\infty,3,2].
+\]
+
+\paragraph{Iteration 4 (settle node 7)}
+\[
+d = [0,3,-1,0,\infty,3,2].
+\]
+
+\paragraph{Iteration 5 (settle node 2)}
+Relaxing $(2,4)$ would improve the distance to node $4$, but node $4$ has already been settled.
+Thus no update occurs.
+
+\paragraph{Iteration 6 (settle node 6)}
+\[
+d = [0,3,-1,0,8,3,2].
+\]
+
+\paragraph{Iteration 7 (settle node 5)}
+No improvement occurs.
+
+\paragraph{Final Dijkstra Distances}
+\[
+\boxed{d = [0,3,-1,0,8,3,2]}.
+\]
+
+%-------------------------------------------------
+
+\subsection*{Comparison}
+
+\[
+\begin{array}{c|c|c}
+\text{Node} & \text{Bellman--Ford} & \text{Dijkstra} \\
+\hline
+1 & 0 & 0 \\
+2 & 3 & 3 \\
+3 & -2 & -1 \\
+4 & -1 & 0 \\
+5 & 7 & 8 \\
+6 & 2 & 3 \\
+7 & 1 & 2
+\end{array}
+\]
+
+The distances computed by Dijkstra’s algorithm differ from the correct shortest-path distances
+found by Bellman--Ford. This confirms that Dijkstra’s algorithm fails on graphs with negative-weight
+edges, even when no negative-weight cycles are present.
+
 \section*{Exercise 2}
 \begin{verbatim}
     MinimizeFurthestDelivery(G, s1, s2, s3):
@@ -129,9 +245,8 @@ t = \arg\min_{v \in V} \max\{ d(s_1,v), d(s_2,v), d(s_3,v) \}.
 \]
 
 Hence, the algorithm returns a city that minimizes the delivery time to the furthest client and is
-therefore correct. \qed
+therefore correct. 
 
----
 
 \paragraph{Runtime Analysis}
 
